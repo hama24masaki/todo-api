@@ -4,7 +4,7 @@ const TokenGenerator = require('uuid-token-generator')
 const NotFoundError = require("../utils/not_found_error");
 const authChecker = require("../utils/auth_checker");
 const models = require('../models');
-const debug = require('debug')('app:tasks');
+const debug = require('debug')('app:users');
 
 const onError = (err, res) => {
     debug(err)
@@ -29,7 +29,7 @@ router.post("/", (req, res) => {
         token: tokenGen.generate(),
     })
     .then(m => {
-        debug("done and return token", m.token);
+        // debug("done and return token", m.token);
         return res.status(200).json({ token: m.token });
     })
     .catch(err => {

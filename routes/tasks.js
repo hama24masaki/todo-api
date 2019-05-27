@@ -21,6 +21,7 @@ const onNotFoundErrorOrElse = (err, res) => {
     return onError(err, res);
 };
 
+const dateFormat = "YYYY-MM-DDTHH:mm:ssZ";
 
 router.use(authChecker); // path指定も可能
 
@@ -44,9 +45,26 @@ router.get('/:taskId', (req, res) => {
 
 router.post("/", (req, res) => {
   if (!req.body.body)
-    return res.status(400).json({ message: "task body is required." });
+    return res.status(400).json({ 
+      error: "Invalid argument",
+      message: "Task body is required." 
+    });
   
-  const dateAt = req.body.at || moment().toDate();
+  let dateAt;
+  if (req.body.at) {
+    const mDate = moment(req.body.at, dateFormat, true)
+    if (!mDate.isValid()) {
+      return res.status(400).json({ 
+        error: "Invalid argument",
+        message: "Value of 'at' is invalid. Please set valid date string" 
+      });
+    } else {
+      dateAt = mDate.toDate();
+    }
+  } else {
+    dateAt = moment().toDate();
+  }
+
   const data = {
     userId: req.header.authenticated_uid, 
     title: req.body.title,
@@ -67,9 +85,26 @@ router.post("/", (req, res) => {
 
 router.patch("/:taskId", (req, res) => {
   if (!req.body.body)
-    return res.status(400).json({ message: "task body is required." });
+    return res.status(400).json({ 
+      error: "Invalid argument",
+      message: "Task body is required." 
+    });
  
-  const dateAt = req.body.at || moment().toDate();
+  let dateAt;
+  if (req.body.at) {
+    const mDate = moment(req.body.at, dateFormat, true)
+    if (!mDate.isValid()) {
+      return res.status(400).json({ 
+        error: "Invalid argument",
+        message: "Value of 'at' is invalid. Please set valid date string" 
+      });
+    } else {
+      dateAt = mDate.toDate();
+    }
+  } else {
+    dateAt = moment().toDate();
+  }
+  
   return models.Task.getById(req.header.authenticated_uid, req.params.taskId)
   .then(task => {
     return task.update({

@@ -2,6 +2,7 @@
 
 const Sequelize = require('sequelize');
 const NotFoundError = require("../utils/not_found_error");
+const debug = require('debug')('app:tasks');
 
 module.exports = (sequelize, DataTypes) => {
   const Task = sequelize.define('Task', {
@@ -36,7 +37,6 @@ module.exports = (sequelize, DataTypes) => {
   }
 
   Task.searchWithQuery = function(userId, query, sort, limit, offset, returnWithModel = false) {  
-    const sortParams = (sort || "").split(",");
     let opt;
     if (query) {
       opt = {
@@ -59,9 +59,19 @@ module.exports = (sequelize, DataTypes) => {
     if (limit)
       opt = Object.assign(opt, { limit: limit })
     
-      if (offset)
+    if (offset)
       opt = Object.assign(opt, { offset: offset });
 
+    const orders = (sort ? sort.split(",") : []).map(key => {
+      if (key.startsWith("-"))
+        return [key.slice(1), "DESC"];
+      else
+        return [key];
+    })
+    if (orders.length > 0)
+      opt = Object.assign(opt, { order: orders });
+
+    debug(opt);
     return this.findAll(opt)
     .then(ret => {
       return returnWithModel ? ret : ret.map(m => m.dataValues);
