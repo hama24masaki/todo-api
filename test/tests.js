@@ -47,7 +47,27 @@ describe('User API: /users', () => {
     });
   });
 
-  it('Duplicate email should failed.', () => {
+  it('Email should be required.', () => {
+    return chai.request(app).post('/beta-v1/users').send({ password: defaultUserData.password })
+    .then(res => {
+      debug(res.body)
+      res.should.have.status(400);
+      res.body.should.have.property('message');
+      res.body.message.should.equal('Email is required.');
+    });
+  });
+
+  it('Password should be required.', () => {
+    return chai.request(app).post('/beta-v1/users').send({ email: defaultUserData.email })
+    .then(res => {
+      debug(res.body)
+      res.should.have.status(400);
+      res.body.should.have.property('message');
+      res.body.message.should.equal('Password is required.');
+    });
+  });
+
+  it('Duplicate email should failed to create.', () => {
     return chai.request(app).post('/beta-v1/users').send(defaultUserData)
     .then(res => {
       res.should.have.status(200);
@@ -64,7 +84,7 @@ describe('User API: /users', () => {
 
 describe('Auth API: /users/auth', () => {
 
-  it('Default user should authenticate.', () => {
+  it('Default user should authenticate and return token.', () => {
     return chai.request(app).post('/beta-v1/users').send(defaultUserData)
     .then(res => {
       res.should.have.status(200);
@@ -73,6 +93,38 @@ describe('Auth API: /users/auth', () => {
     .then(res => {
       res.should.have.status(200);
       res.body.should.have.property('token');
+    });
+  });
+
+  it('Wrong email should failed to authenticate.', () => {
+    return chai.request(app).post('/beta-v1/users').send(defaultUserData)
+    .then(res => {
+      res.should.have.status(200);
+      return chai.request(app).post('/beta-v1/users/auth').send({
+        email: defaultUserData.email + "xxxxx",
+        password: defaultUserData.password,
+      })
+    })
+    .then(res => {
+      res.should.have.status(400);
+      res.body.error.should.equal('Authentication failed');
+      res.body.message.should.equal('Email or password are invalid.');
+    });
+  });
+
+  it('Wrong password should failed to authenticate.', () => {
+    return chai.request(app).post('/beta-v1/users').send(defaultUserData)
+    .then(res => {
+      res.should.have.status(200);
+      return chai.request(app).post('/beta-v1/users/auth').send({
+        email: defaultUserData.email,
+        password: defaultUserData.password + "xxxxx",
+      })
+    })
+    .then(res => {
+      res.should.have.status(400);
+      res.body.error.should.equal('Authentication failed');
+      res.body.message.should.equal('Email or password are invalid.');
     });
   });
 });
@@ -277,7 +329,7 @@ describe("Task API: /tasks", () => {
       });
     });
 
-    it('Q-param should query part of tasks from body and title.', () => {
+    it('Should query part of tasks from body and title by "q" params.', () => {
       return prepareUserAndTasks()
       .then(token => {
         // "cc"でTitleとBodyを部分一致検索する
@@ -290,7 +342,7 @@ describe("Task API: /tasks", () => {
       });
     });
 
-    it('Tasks should ordered by sort-params.', () => {
+    it('Resultset should ordered by "sort" params.', () => {
       return prepareUserAndTasks()
       .then(token => {
         // Titleの昇順、Bodyの降順 でソートする
@@ -308,7 +360,7 @@ describe("Task API: /tasks", () => {
       });
     });
     
-    it('Get part of tasks by limit and offset params.', () => {
+    it('Resultset should be limited by "limit" and "offset" params.', () => {
       return prepareUserAndTasks()
       .then(token => {
         // Bodyの昇順ソートでPaging

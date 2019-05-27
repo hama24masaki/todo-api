@@ -19,9 +19,9 @@ const tokenGen = new TokenGenerator(256, TokenGenerator.BASE62);
 
 router.post("/", (req, res) => {
     if (!req.body.email)
-        return res.status(400).json({ message: "email is required." });
+        return res.status(400).json({ message: "Email is required." });
     if (!req.body.password)
-        return res.status(400).json({ message: "password is required." });
+        return res.status(400).json({ message: "Password is required." });
     
     return models.User.create({
         email: req.body.email,
@@ -43,9 +43,9 @@ router.post("/", (req, res) => {
   
 router.post("/auth", (req, res) => {
     if (!req.body.email)
-        return res.status(400).json({ message: "email is required." });
+        return res.status(400).json({ message: "Email is required." });
     if (!req.body.password)
-        return res.status(400).json({ message: "password is required." });
+        return res.status(400).json({ message: "Password is required." });
     
     return models.User.findOne({ where: { 
         email: req.body.email,
@@ -63,7 +63,7 @@ router.post("/auth", (req, res) => {
     .catch(err => {
         if (err instanceof NotFoundError)
             return res.status(400).json({
-                error: "Authentication failed.",
+                error: "Authentication failed",
                 message: "Email or password are invalid.",
             });
         else
