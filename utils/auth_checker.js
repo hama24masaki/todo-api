@@ -20,7 +20,7 @@ module.exports = function(req, res, next) {
   .then(m => {
     req.header.authenticated_uid = m.id;
     // debug(`${token} ---> uid=${m.id}`)
-    next();
+    return next();
   })
   .catch(err => {
     if (err instanceof NotFoundError) {
