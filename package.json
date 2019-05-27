@@ -3,9 +3,13 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "set DEBUG=app:* & node ./bin/www",
+    "start": "node ./bin/www",
     "dev": "set DEBUG=app:*,express:* & node-dev ./bin/www",
-    "test": "set DEBUG=app:* & mocha --timeout 5000"
+    "test": "mocha --timeout 10000",
+    "testd": "set DEBUG=app:*,test:*,sequelize:sql:* & mocha --timeout 10000",
+    "lint": "eslint .",
+    "migrate-dev": "sequelize db:migrate --env development",
+    "migrate-test": "sequelize db:migrate --env test"
   },
   "dependencies": {
     "debug": "~2.6.9",

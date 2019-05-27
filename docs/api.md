@@ -28,8 +28,8 @@ TODOアプリ用API。
 + Request (application/json)
 
     + Attributes
-        + email: test@example.com (string, required) - メールアドレス（format: email）
-        + password: abc123 (string, required) - パスワード（pattern: ^[0-9A-Za-z]{6,16}$）
+        + email: test@example.com (string, required) - メールアドレス
+        + password: abc123 (string, required) - パスワード
 
 + Response 201 (application/json)
 
@@ -42,7 +42,7 @@ TODOアプリ用API。
 
             {
                 "error": "Invalid arguments",
-                "description": "Assigned email is already exists.",
+                "message": "Assigned email is already exists.",
             }
 
 
@@ -69,7 +69,7 @@ TODOアプリ用API。
 
             {
                 "error": "Invalid arguments",
-                "description": "Email or password, or both are wrong.",
+                "message": "Email or password, or both are wrong.",
             }
 
 
@@ -115,7 +115,7 @@ TODOアプリ用API。
 
             {
                 "error": "Unauthorized",
-                "description": "Invalid token.",
+                "message": "Invalid token.",
             }
 
 
@@ -137,7 +137,7 @@ TODOアプリ用API。
     + Attributes
         + title: `my new task` (string, optional) - タイトル
         + body: `I'll do something` (string, optional) - コンテンツ
-        + at: `2019-04-08T11:36:45+09:00` (string, optional) - 作成日時。
+        + at: `2019-04-08T11:36:45+0000` (string, optional) - 作成日時。JSTなら'+0900'
 
 + Response 201 (application/json)
 
@@ -153,7 +153,7 @@ TODOアプリ用API。
 
             {
                 "error": "Invalid arguments",
-                "description": "title or body is required.",
+                "message": "Task body is required.",
             }
 
 + Response 401 (application/json)
@@ -162,7 +162,7 @@ TODOアプリ用API。
 
             {
                 "error": "Unauthorized",
-                "description": "Invalid token.",
+                "message": "Invalid token.",
             }
 
 
@@ -189,7 +189,7 @@ TODOアプリ用API。
     + Attributes
         + title: `my new title` (string, optional) - タイトル
         + body: `I'll do something` (string, optional) - コンテンツ
-        + at: `2019-04-08T11:36:45+09:00` (string, optional) - 更新日時。
+        + at: `2019-04-08T11:36:45+0900` (string, optional) - 更新日時。
 
 + Response 201 (application/json)
 
@@ -205,7 +205,7 @@ TODOアプリ用API。
 
             {
                 "error": "Invalid arguments",
-                "description": "title or body is required.",
+                "message": "task body is required.",
             }
 
 + Response 401 (application/json)
@@ -214,7 +214,7 @@ TODOアプリ用API。
 
             {
                 "error": "Unauthorized",
-                "description": "Invalid token.",
+                "message": "Invalid token.",
             }
 
 
@@ -236,7 +236,7 @@ TODOアプリ用API。
 
             {
                 "error": "Unauthorized",
-                "description": "Invalid token.",
+                "message": "Invalid token.",
             }
 
 
@@ -269,7 +269,7 @@ TODOアプリ用API。
 
             {
                 "error": "Unauthorized",
-                "description": "Invalid token.",
+                "message": "Invalid token.",
             }
 
 
@@ -293,7 +293,7 @@ TODOアプリ用API。
 
             {
                 "error": "Unauthorized",
-                "description": "Invalid token.",
+                "message": "Invalid token.",
             }
 
 
