@@ -26,12 +26,15 @@
 
 ### API定義
 
-[docs/api.html](https://github.com/hama24masaki/todo-api/blob/master/docs/api.html)
+- [GitHub page](https://hama24masaki.github.io/todo-api/api.html) ( Source is [docs/api.html](https://github.com/hama24masaki/todo-api/blob/master/docs/api.html) )
 
 ### テスト
 
-[test/tests.js](https://github.com/hama24masaki/todo-api/blob/master/test/tests.js)
+#### テストコード
+- [test/tests.js](https://github.com/hama24masaki/todo-api/blob/master/test/tests.js)
 
+#### テスト結果
+- [GitHub page](https://hama24masaki.github.io/todo-api/test_result.html) ( Source is [docs/test_result.html](https://github.com/hama24masaki/todo-api/blob/master/docs/test_result.html) )
 
 ## 環境構築等手順
 
