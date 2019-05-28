@@ -424,30 +424,30 @@ body {
                     <li><span id="toggle-passes" class="toggle-passes">show failures only</span></li>
                 </ul>
                 <ul class="mocha-stats">
-                    <li class="passes">passes: <em>20</em></li>
+                    <li class="passes">passes: <em>24</em></li>
                     <li class="pending">pending: <em>0</em></li>
                     <li class="failures">failures: <em>0</em></li>
-                    <li class="duration">duration: <em>1.3s</em></li>
+                    <li class="duration">duration: <em>2.3s</em></li>
                 </ul>
             </div>
-            <ul id="report"><li class="suite"><h1>User API: /users</h1><ul><li class="test pass medium"><h2>Default user should create and return token.<span class="duration">43ms</span></h2><pre><code>return chai.request(app).post(&#x27;/beta-v1/users&#x27;).send(defaultUserData)
+            <ul id="report"><li class="suite"><h1>User API:</h1><ul><li class="suite"><h1>POST beta-v1/users </h1><ul><li class="test pass slow"><h2>Default user should create and return token.<span class="duration">102ms</span></h2><pre><code>return chai.request(app).post(&#x27;/beta-v1/users&#x27;).send(defaultUserData)
 .then(res =&#x3E; {
   debug(res.body)
   res.should.have.status(200);
   res.body.should.have.property(&#x27;token&#x27;);
-});</code></pre></li><li class="test pass fast"><h2>Email should be required.<span class="duration">3ms</span></h2><pre><code>return chai.request(app).post(&#x27;/beta-v1/users&#x27;).send({ password: defaultUserData.password })
+});</code></pre></li><li class="test pass fast"><h2>Email should be required.<span class="duration">9ms</span></h2><pre><code>return chai.request(app).post(&#x27;/beta-v1/users&#x27;).send({ password: defaultUserData.password })
 .then(res =&#x3E; {
   debug(res.body)
   res.should.have.status(400);
   res.body.should.have.property(&#x27;message&#x27;);
   res.body.message.should.equal(&#x27;Email is required.&#x27;);
-});</code></pre></li><li class="test pass fast"><h2>Password should be required.<span class="duration">8ms</span></h2><pre><code>return chai.request(app).post(&#x27;/beta-v1/users&#x27;).send({ email: defaultUserData.email })
+});</code></pre></li><li class="test pass fast"><h2>Password should be required.<span class="duration">5ms</span></h2><pre><code>return chai.request(app).post(&#x27;/beta-v1/users&#x27;).send({ email: defaultUserData.email })
 .then(res =&#x3E; {
   debug(res.body)
   res.should.have.status(400);
   res.body.should.have.property(&#x27;message&#x27;);
   res.body.message.should.equal(&#x27;Password is required.&#x27;);
-});</code></pre></li><li class="test pass fast"><h2>Duplicate email should failed to create.<span class="duration">21ms</span></h2><pre><code>return chai.request(app).post(&#x27;/beta-v1/users&#x27;).send(defaultUserData)
+});</code></pre></li><li class="test pass fast"><h2>Duplicate email should failed to create.<span class="duration">32ms</span></h2><pre><code>return chai.request(app).post(&#x27;/beta-v1/users&#x27;).send(defaultUserData)
 .then(res =&#x3E; {
   res.should.have.status(200);
   return chai.request(app).post(&#x27;/beta-v1/users&#x27;).send(defaultUserData)
@@ -457,7 +457,7 @@ body {
   res.should.have.status(400);
   res.body.should.have.property(&#x27;message&#x27;);
   res.body.message.should.equal(&#x27;Assigned email is already exists.&#x27;);
-});</code></pre></li></ul></li><li class="suite"><h1>Auth API: /users/auth</h1><ul><li class="test pass fast"><h2>Default user should authenticate and return token.<span class="duration">31ms</span></h2><pre><code>return chai.request(app).post(&#x27;/beta-v1/users&#x27;).send(defaultUserData)
+});</code></pre></li></ul></li></ul></li><li class="suite"><h1>Auth API:</h1><ul><li class="suite"><h1>POST beta-v1/users/auth </h1><ul><li class="test pass medium"><h2>Default user should authenticate and return token.<span class="duration">58ms</span></h2><pre><code>return chai.request(app).post(&#x27;/beta-v1/users&#x27;).send(defaultUserData)
 .then(res =&#x3E; {
   res.should.have.status(200);
   return chai.request(app).post(&#x27;/beta-v1/users/auth&#x27;).send(defaultUserData)
@@ -465,7 +465,7 @@ body {
 .then(res =&#x3E; {
   res.should.have.status(200);
   res.body.should.have.property(&#x27;token&#x27;);
-});</code></pre></li><li class="test pass fast"><h2>Wrong email should failed to authenticate.<span class="duration">16ms</span></h2><pre><code>return chai.request(app).post(&#x27;/beta-v1/users&#x27;).send(defaultUserData)
+});</code></pre></li><li class="test pass fast"><h2>Wrong email should failed to authenticate.<span class="duration">29ms</span></h2><pre><code>return chai.request(app).post(&#x27;/beta-v1/users&#x27;).send(defaultUserData)
 .then(res =&#x3E; {
   res.should.have.status(200);
   return chai.request(app).post(&#x27;/beta-v1/users/auth&#x27;).send({
@@ -477,7 +477,7 @@ body {
   res.should.have.status(400);
   res.body.error.should.equal(&#x27;Authentication failed&#x27;);
   res.body.message.should.equal(&#x27;Email or password are invalid.&#x27;);
-});</code></pre></li><li class="test pass fast"><h2>Wrong password should failed to authenticate.<span class="duration">17ms</span></h2><pre><code>return chai.request(app).post(&#x27;/beta-v1/users&#x27;).send(defaultUserData)
+});</code></pre></li><li class="test pass fast"><h2>Wrong password should failed to authenticate.<span class="duration">33ms</span></h2><pre><code>return chai.request(app).post(&#x27;/beta-v1/users&#x27;).send(defaultUserData)
 .then(res =&#x3E; {
   res.should.have.status(200);
   return chai.request(app).post(&#x27;/beta-v1/users/auth&#x27;).send({
@@ -489,11 +489,7 @@ body {
   res.should.have.status(400);
   res.body.error.should.equal(&#x27;Authentication failed&#x27;);
   res.body.message.should.equal(&#x27;Email or password are invalid.&#x27;);
-});</code></pre></li></ul></li><li class="suite"><h1>Task API: /tasks</h1><ul><li class="test pass fast"><h2>Access without token should failed.<span class="duration">4ms</span></h2><pre><code>return chai.request(app).get(&#x27;/beta-v1/tasks&#x27;)
-.then(res =&#x3E; {
-  res.should.have.status(400);
-  res.body.error.should.equal(&#x27;Unautholized&#x27;);
-});</code></pre></li><li class="test pass fast"><h2>Access with token should ok.<span class="duration">32ms</span></h2><pre><code>return chai.request(app).post(&#x27;/beta-v1/users&#x27;).send(defaultUserData)
+});</code></pre></li></ul></li></ul></li><li class="suite"><h1>Task API:</h1><ul><li class="test pass fast"><h2>Access with token should success.<span class="duration">34ms</span></h2><pre><code>return chai.request(app).post(&#x27;/beta-v1/users&#x27;).send(defaultUserData)
 .then(res =&#x3E; {
   const token = res.body.token;
   return chai.request(app).get(&#x27;/beta-v1/tasks&#x27;).set(&#x22;Authentication&#x22;, token)
@@ -501,7 +497,11 @@ body {
 .then(res =&#x3E; {
   res.should.have.status(200);
   res.body.should.be.an(&#x27;array&#x27;).to.have.lengthOf(0);
-});</code></pre></li><li class="suite"><h1>/POST tasks</h1><ul><li class="test pass fast"><h2>New task should create.<span class="duration">31ms</span></h2><pre><code>return prepareUser()
+});</code></pre></li><li class="test pass fast"><h2>Access without token should failed.<span class="duration">4ms</span></h2><pre><code>return chai.request(app).get(&#x27;/beta-v1/tasks&#x27;)
+.then(res =&#x3E; {
+  res.should.have.status(400);
+  res.body.error.should.equal(&#x27;Unautholized&#x27;);
+});</code></pre></li><li class="suite"><h1>/POST beta-v1/tasks</h1><ul><li class="test pass medium"><h2>New task should create.<span class="duration">55ms</span></h2><pre><code>return prepareUser()
 .then(token =&#x3E; {
   return chai.request(app).post(&#x27;/beta-v1/tasks&#x27;).set(&#x22;Authentication&#x22;, token).send(taskData)
 })
@@ -516,7 +516,7 @@ body {
   res.body.should.have.property(&#x27;updatedAt&#x27;);
   res.body.createdAt.should.equal(res.body.updatedAt);
   // res.body.should.not.have.property(&#x27;userId&#x27;);
-})</code></pre></li><li class="test pass fast"><h2>Task body should be required.<span class="duration">16ms</span></h2><pre><code>return prepareUser()
+})</code></pre></li><li class="test pass fast"><h2>Task body should be required.<span class="duration">19ms</span></h2><pre><code>return prepareUser()
 .then(token =&#x3E; {
   return chai.request(app).post(&#x27;/beta-v1/tasks&#x27;).set(&#x22;Authentication&#x22;, token).send({
     title: &#x22;taitoru&#x22;
@@ -526,7 +526,7 @@ body {
   res.should.have.status(400);
   res.body.error.should.equal(&#x27;Invalid argument&#x27;);
   res.body.message.should.equal(&#x27;Task body is required.&#x27;);
-})</code></pre></li><li class="test pass fast"><h2>CreatedAt should be able to design.<span class="duration">30ms</span></h2><pre><code>return prepareUser()
+})</code></pre></li><li class="test pass fast"><h2>CreatedAt should be able to design.<span class="duration">37ms</span></h2><pre><code>return prepareUser()
 .then(token =&#x3E; {
   return chai.request(app).post(&#x27;/beta-v1/tasks&#x27;).set(&#x22;Authentication&#x22;, token).send({
     body: &#x22;task with createdAt&#x22;,
@@ -538,7 +538,7 @@ body {
   res.should.have.status(201);
   res.body.createdAt.should.equal(&#x27;2019-06-01T02:15:00.000Z&#x27;); // 
   res.body.createdAt.should.equal(res.body.updatedAt);
-})</code></pre></li><li class="test pass fast"><h2>Date-string should be restrictly formatted.<span class="duration">17ms</span></h2><pre><code>return prepareUser()
+})</code></pre></li><li class="test pass fast"><h2>Date-string should be restrictly formatted.<span class="duration">29ms</span></h2><pre><code>return prepareUser()
 .then(token =&#x3E; {
   return chai.request(app).post(&#x27;/beta-v1/tasks&#x27;).set(&#x22;Authentication&#x22;, token).send({
     body: &#x22;task with createdAt&#x22;,
@@ -549,7 +549,27 @@ body {
   res.should.have.status(400);
   res.body.error.should.equal(&#x27;Invalid argument&#x27;);
   // res.body.createdAt.should.equal(res.body.updatedAt);
-})</code></pre></li></ul></li><li class="suite"><h1>/PATCH tasks/{id}</h1><ul><li class="test pass medium"><h2>Task should uodate.<span class="duration">44ms</span></h2><pre><code>const update = {
+})</code></pre></li></ul></li><li class="suite"><h1>/GET beta-v1/tasks/{id}</h1><ul><li class="test pass medium"><h2>Task should get.<span class="duration">55ms</span></h2><pre><code>let taskId
+return prepareUserAndTask()
+.then(ret =&#x3E; {
+  const token = ret[0];
+  taskId = ret[1];
+  return chai.request(app).get(&#x60;/beta-v1/tasks/${taskId}&#x60;).set(&#x22;Authentication&#x22;, token)
+})
+.then(res =&#x3E; {
+  res.should.have.status(200);
+  res.body.id.should.equal(taskId);
+  res.body.title.should.equal(taskData.title);
+  res.body.body.should.equal(taskData.body);
+})</code></pre></li><li class="test pass medium"><h2>Invalid taskId should get 404.<span class="duration">46ms</span></h2><pre><code>return prepareUserAndTask()
+.then(ret =&#x3E; {
+  const token = ret[0];
+  const taskId = ret[1] + &#x22;000&#x22;;
+  return chai.request(app).get(&#x60;/beta-v1/tasks/${taskId}&#x60;).set(&#x22;Authentication&#x22;, token)
+})
+.then(res =&#x3E; {
+  res.should.have.status(404);
+})</code></pre></li></ul></li><li class="suite"><h1>/PATCH beta-v1/tasks/{id}</h1><ul><li class="test pass medium"><h2>Task should uodate.<span class="duration">69ms</span></h2><pre><code>const update = {
   title: &#x22;modified title&#x22;,
   body: &#x22;modified task description or body&#x22;,
 }
@@ -569,7 +589,7 @@ return prepareUserAndTask()
   res.body.should.have.property(&#x27;updatedAt&#x27;);
   res.body.createdAt.should.not.equal(res.body.updatedAt);
   // res.body.should.not.have.property(&#x27;userId&#x27;);
-})</code></pre></li><li class="test pass medium"><h2>UpdatedAt should be able to design.<span class="duration">42ms</span></h2><pre><code>return prepareUserAndTask()
+})</code></pre></li><li class="test pass medium"><h2>UpdatedAt should be able to design.<span class="duration">75ms</span></h2><pre><code>return prepareUserAndTask()
 .then(ret =&#x3E; {
   return chai.request(app).patch(&#x60;/beta-v1/tasks/${ret[1]}&#x60;).set(&#x22;Authentication&#x22;, ret[0]).send({
     body: &#x22;task with updatedAt&#x22;,
@@ -580,15 +600,14 @@ return prepareUserAndTask()
   res.should.have.status(200);
   res.body.updatedAt.should.equal(&#x27;2019-06-01T15:15:00.000Z&#x27;); // 
   res.body.createdAt.should.not.equal(res.body.updatedAt);
-})</code></pre></li></ul></li><li class="suite"><h1>/DELETE tasks/{id}</h1><ul><li class="test pass medium"><h2>Task should delete.<span class="duration">44ms</span></h2><pre><code>return prepareUserAndTask()
+})</code></pre></li></ul></li><li class="suite"><h1>/DELETE beta-v1/tasks/{id}</h1><ul><li class="test pass medium"><h2>Task should delete.<span class="duration">67ms</span></h2><pre><code>return prepareUserAndTask()
 .then(ret =&#x3E; {
-  debug(ret)
   return chai.request(app).delete(&#x60;/beta-v1/tasks/${ret[1]}&#x60;).set(&#x22;Authentication&#x22;, ret[0])
 })
 .then(res =&#x3E; {
   res.should.have.status(204);
   res.body.should.be.empty;
-})</code></pre></li></ul></li><li class="suite"><h1>/GET tasks</h1><ul><li class="test pass slow"><h2>Should get all tasks of his/her own.<span class="duration">165ms</span></h2><pre><code>return prepareUserAndTasks(anotherUserData)
+})</code></pre></li></ul></li><li class="suite"><h1>/GET beta-v1/tasks</h1><ul><li class="test pass slow"><h2>Should get all tasks of his/her own.<span class="duration">276ms</span></h2><pre><code>return prepareUserAndTasks(anotherUserData)
 .then(() =&#x3E; {
   return prepareUserAndTasks(defaultUserData)
 })
@@ -599,7 +618,7 @@ return prepareUserAndTask()
 .then(res =&#x3E; {
   res.should.have.status(200);
   res.body.should.be.an(&#x27;array&#x27;).to.have.lengthOf(5);
-});</code></pre></li><li class="test pass slow"><h2>Should query part of tasks from body and title by &#x22;q&#x22; params.<span class="duration">90ms</span></h2><pre><code>return prepareUserAndTasks()
+});</code></pre></li><li class="test pass slow"><h2>Should query part of tasks from body and title by &#x22;q&#x22; params.<span class="duration">129ms</span></h2><pre><code>return prepareUserAndTasks()
 .then(token =&#x3E; {
   // &#x22;cc&#x22;&#x3067;Title&#x3068;Body&#x3092;&#x90E8;&#x5206;&#x4E00;&#x81F4;&#x691C;&#x7D22;&#x3059;&#x308B;
   return chai.request(app).get(&#x27;/beta-v1/tasks?q=cc&#x27;)
@@ -608,7 +627,7 @@ return prepareUserAndTask()
 .then(res =&#x3E; {
   res.should.have.status(200);
   res.body.should.be.an(&#x27;array&#x27;).to.have.lengthOf(2);
-});</code></pre></li><li class="test pass slow"><h2>Resultset should ordered by &#x22;sort&#x22; params.<span class="duration">101ms</span></h2><pre><code>return prepareUserAndTasks()
+});</code></pre></li><li class="test pass slow"><h2>Resultset should ordered by &#x22;sort&#x22; params.<span class="duration">132ms</span></h2><pre><code>return prepareUserAndTasks()
 .then(token =&#x3E; {
   // Title&#x306E;&#x6607;&#x9806;&#x3001;Body&#x306E;&#x964D;&#x9806; &#x3067;&#x30BD;&#x30FC;&#x30C8;&#x3059;&#x308B;
   return chai.request(app).get(&#x27;/beta-v1/tasks?sort=title,-body&#x27;)
@@ -622,7 +641,7 @@ return prepareUserAndTask()
   res.body[2].body.should.equal(&#x22;task 1 aaaaa&#x22;)
   res.body[3].body.should.equal(&#x22;task 5 eeeee&#x22;)
   res.body[4].body.should.equal(&#x22;task 3 ccccc&#x22;)
-});</code></pre></li><li class="test pass slow"><h2>Resultset should be limited by &#x22;limit&#x22; and &#x22;offset&#x22; params.<span class="duration">78ms</span></h2><pre><code>return prepareUserAndTasks()
+});</code></pre></li><li class="test pass slow"><h2>Resultset should be limited by &#x22;limit&#x22; and &#x22;offset&#x22; params.<span class="duration">118ms</span></h2><pre><code>return prepareUserAndTasks()
 .then(token =&#x3E; {
   // Body&#x306E;&#x6607;&#x9806;&#x30BD;&#x30FC;&#x30C8;&#x3067;Paging
   return chai.request(app).get(&#x27;/beta-v1/tasks?sort=body&#x26;limit=2&#x26;offset=2&#x27;)
@@ -633,7 +652,45 @@ return prepareUserAndTask()
   res.body.should.be.an(&#x27;array&#x27;).to.have.lengthOf(2);
   res.body[0].body.should.equal(&#x22;task 3 ccccc&#x22;)
   res.body[1].body.should.equal(&#x22;task 4 ddddd&#x22;)
-});</code></pre></li></ul></li></ul></li></ul>
+});</code></pre></li></ul></li></ul></li><li class="suite"><h1>Task Star API:</h1><ul><li class="suite"><h1>/PUT beta-v1/tasks/{id}/star</h1><ul><li class="test pass medium"><h2>Task&#x27;s star should ON, and updatedAt are not updated.<span class="duration">71ms</span></h2><pre><code>let token;
+let updatedAt;
+return prepareUser()
+.then(t =&#x3E; {
+  token = t;
+  return chai.request(app).post(&#x27;/beta-v1/tasks&#x27;).set(&#x22;Authentication&#x22;, t).send({
+    body: &#x22;aaaa&#x22;,
+    at: &#x22;2019-01-01T00:00:00+0000&#x22;,
+  })
+  .then(res =&#x3E; {
+    taskId = res.body.id;
+    updatedAt = res.body.updatedAt;
+    return chai.request(app).put(&#x60;/beta-v1/tasks/${taskId}/star&#x60;).set(&#x22;Authentication&#x22;, t)
+  })
+  .then(res =&#x3E; {
+    res.should.have.status(200);
+    res.body.stared.should.equal(true);
+    res.body.updatedAt.should.equal(updatedAt);
+  })
+})</code></pre></li></ul></li><li class="suite"><h1>/DELETE beta-v1/tasks/{id}/star</h1><ul><li class="test pass medium"><h2>Task&#x27;s star should OFF, and updatedAt are not updated.<span class="duration">61ms</span></h2><pre><code>let token;
+let updatedAt;
+return prepareUser()
+.then(t =&#x3E; {
+  token = t;
+  return chai.request(app).post(&#x27;/beta-v1/tasks&#x27;).set(&#x22;Authentication&#x22;, t).send({
+    body: &#x22;aaaa&#x22;,
+    at: &#x22;2019-01-01T00:00:00+0000&#x22;,
+  })
+  .then(res =&#x3E; {
+    taskId = res.body.id;
+    updatedAt = res.body.updatedAt;
+    return chai.request(app).delete(&#x60;/beta-v1/tasks/${taskId}/star&#x60;).set(&#x22;Authentication&#x22;, t)
+  })
+  .then(res =&#x3E; {
+    res.should.have.status(200);
+    res.body.stared.should.equal(false);
+    res.body.updatedAt.should.equal(updatedAt);
+  })
+})</code></pre></li></ul></li></ul></li></ul>
         </div>
         <script>
         function hideSuitesWithout(className) {

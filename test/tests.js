@@ -36,110 +36,115 @@ beforeEach(() => {
   })
 });
 
-describe('User API: /users', () => {
+describe('User API:', () => {
+  describe("POST beta-v1/users ", () => {
 
-  it('Default user should create and return token.', () => {
-    return chai.request(app).post('/beta-v1/users').send(defaultUserData)
-    .then(res => {
-      debug(res.body)
-      res.should.have.status(200);
-      res.body.should.have.property('token');
-    });
-  });
-
-  it('Email should be required.', () => {
-    return chai.request(app).post('/beta-v1/users').send({ password: defaultUserData.password })
-    .then(res => {
-      debug(res.body)
-      res.should.have.status(400);
-      res.body.should.have.property('message');
-      res.body.message.should.equal('Email is required.');
-    });
-  });
-
-  it('Password should be required.', () => {
-    return chai.request(app).post('/beta-v1/users').send({ email: defaultUserData.email })
-    .then(res => {
-      debug(res.body)
-      res.should.have.status(400);
-      res.body.should.have.property('message');
-      res.body.message.should.equal('Password is required.');
-    });
-  });
-
-  it('Duplicate email should failed to create.', () => {
-    return chai.request(app).post('/beta-v1/users').send(defaultUserData)
-    .then(res => {
-      res.should.have.status(200);
+    it('Default user should create and return token.', () => {
       return chai.request(app).post('/beta-v1/users').send(defaultUserData)
-    })
-    .then(res => {
-      debug(res.body)
-      res.should.have.status(400);
-      res.body.should.have.property('message');
-      res.body.message.should.equal('Assigned email is already exists.');
+      .then(res => {
+        debug(res.body)
+        res.should.have.status(200);
+        res.body.should.have.property('token');
+      });
+    });
+  
+    it('Email should be required.', () => {
+      return chai.request(app).post('/beta-v1/users').send({ password: defaultUserData.password })
+      .then(res => {
+        debug(res.body)
+        res.should.have.status(400);
+        res.body.should.have.property('message');
+        res.body.message.should.equal('Email is required.');
+      });
+    });
+  
+    it('Password should be required.', () => {
+      return chai.request(app).post('/beta-v1/users').send({ email: defaultUserData.email })
+      .then(res => {
+        debug(res.body)
+        res.should.have.status(400);
+        res.body.should.have.property('message');
+        res.body.message.should.equal('Password is required.');
+      });
+    });
+  
+    it('Duplicate email should failed to create.', () => {
+      return chai.request(app).post('/beta-v1/users').send(defaultUserData)
+      .then(res => {
+        res.should.have.status(200);
+        return chai.request(app).post('/beta-v1/users').send(defaultUserData)
+      })
+      .then(res => {
+        debug(res.body)
+        res.should.have.status(400);
+        res.body.should.have.property('message');
+        res.body.message.should.equal('Assigned email is already exists.');
+      });
+    });
+  
+  });
+});
+
+describe('Auth API:', () => {
+  describe("POST beta-v1/users/auth ", () => {
+
+    it('Default user should authenticate and return token.', () => {
+      return chai.request(app).post('/beta-v1/users').send(defaultUserData)
+      .then(res => {
+        res.should.have.status(200);
+        return chai.request(app).post('/beta-v1/users/auth').send(defaultUserData)
+      })
+      .then(res => {
+        res.should.have.status(200);
+        res.body.should.have.property('token');
+      });
+    });
+
+    it('Wrong email should failed to authenticate.', () => {
+      return chai.request(app).post('/beta-v1/users').send(defaultUserData)
+      .then(res => {
+        res.should.have.status(200);
+        return chai.request(app).post('/beta-v1/users/auth').send({
+          email: defaultUserData.email + "xxxxx",
+          password: defaultUserData.password,
+        })
+      })
+      .then(res => {
+        res.should.have.status(400);
+        res.body.error.should.equal('Authentication failed');
+        res.body.message.should.equal('Email or password are invalid.');
+      });
+    });
+
+    it('Wrong password should failed to authenticate.', () => {
+      return chai.request(app).post('/beta-v1/users').send(defaultUserData)
+      .then(res => {
+        res.should.have.status(200);
+        return chai.request(app).post('/beta-v1/users/auth').send({
+          email: defaultUserData.email,
+          password: defaultUserData.password + "xxxxx",
+        })
+      })
+      .then(res => {
+        res.should.have.status(400);
+        res.body.error.should.equal('Authentication failed');
+        res.body.message.should.equal('Email or password are invalid.');
+      });
     });
   });
 });
 
-describe('Auth API: /users/auth', () => {
+function prepareUser(data = defaultUserData) {
+  return chai.request(app).post('/beta-v1/users').send(data)
+  .then(res => {
+    return res.body.token;
+  })
+}
 
-  it('Default user should authenticate and return token.', () => {
-    return chai.request(app).post('/beta-v1/users').send(defaultUserData)
-    .then(res => {
-      res.should.have.status(200);
-      return chai.request(app).post('/beta-v1/users/auth').send(defaultUserData)
-    })
-    .then(res => {
-      res.should.have.status(200);
-      res.body.should.have.property('token');
-    });
-  });
 
-  it('Wrong email should failed to authenticate.', () => {
-    return chai.request(app).post('/beta-v1/users').send(defaultUserData)
-    .then(res => {
-      res.should.have.status(200);
-      return chai.request(app).post('/beta-v1/users/auth').send({
-        email: defaultUserData.email + "xxxxx",
-        password: defaultUserData.password,
-      })
-    })
-    .then(res => {
-      res.should.have.status(400);
-      res.body.error.should.equal('Authentication failed');
-      res.body.message.should.equal('Email or password are invalid.');
-    });
-  });
+describe("Task API:", () => {
 
-  it('Wrong password should failed to authenticate.', () => {
-    return chai.request(app).post('/beta-v1/users').send(defaultUserData)
-    .then(res => {
-      res.should.have.status(200);
-      return chai.request(app).post('/beta-v1/users/auth').send({
-        email: defaultUserData.email,
-        password: defaultUserData.password + "xxxxx",
-      })
-    })
-    .then(res => {
-      res.should.have.status(400);
-      res.body.error.should.equal('Authentication failed');
-      res.body.message.should.equal('Email or password are invalid.');
-    });
-  });
-});
-
-describe("Task API: /tasks", () => {
-
-  it('Access without token should failed.', () => {
-    return chai.request(app).get('/beta-v1/tasks')
-    .then(res => {
-      res.should.have.status(400);
-      res.body.error.should.equal('Unautholized');
-    });
-  });
-
-  it('Access with token should ok.', () => {
+  it('Access with token should success.', () => {
     return chai.request(app).post('/beta-v1/users').send(defaultUserData)
     .then(res => {
       const token = res.body.token;
@@ -151,19 +156,20 @@ describe("Task API: /tasks", () => {
     });
   });
 
-  function prepareUser(data = defaultUserData) {
-    return chai.request(app).post('/beta-v1/users').send(data)
+  it('Access without token should failed.', () => {
+    return chai.request(app).get('/beta-v1/tasks')
     .then(res => {
-      return res.body.token;
-    })
-  }
+      res.should.have.status(400);
+      res.body.error.should.equal('Unautholized');
+    });
+  });
 
   const taskData = {
     title: "title",
     body: "task description or body",
   }
 
-  describe("/POST tasks", () => {
+  describe("/POST beta-v1/tasks", () => {
     it('New task should create.', () => {
       return prepareUser()
       .then(token => {
@@ -239,7 +245,37 @@ describe("Task API: /tasks", () => {
     })
   }
 
-  describe("/PATCH tasks/{id}", () => {
+  describe("/GET beta-v1/tasks/{id}", () => {
+    it('Task should get.', () => {
+      let taskId
+      return prepareUserAndTask()
+      .then(ret => {
+        const token = ret[0];
+        taskId = ret[1];
+        return chai.request(app).get(`/beta-v1/tasks/${taskId}`).set("Authentication", token)
+      })
+      .then(res => {
+        res.should.have.status(200);
+        res.body.id.should.equal(taskId);
+        res.body.title.should.equal(taskData.title);
+        res.body.body.should.equal(taskData.body);
+      })
+    });
+
+    it('Invalid taskId should get 404.', () => {
+      return prepareUserAndTask()
+      .then(ret => {
+        const token = ret[0];
+        const taskId = ret[1] + "000";
+        return chai.request(app).get(`/beta-v1/tasks/${taskId}`).set("Authentication", token)
+      })
+      .then(res => {
+        res.should.have.status(404);
+      })
+    });
+  });
+
+  describe("/PATCH beta-v1/tasks/{id}", () => {
     it('Task should uodate.', () => {
       const update = {
         title: "modified title",
@@ -281,11 +317,10 @@ describe("Task API: /tasks", () => {
 
   });
 
-  describe("/DELETE tasks/{id}", () => {
+  describe("/DELETE beta-v1/tasks/{id}", () => {
     it('Task should delete.', () => {
       return prepareUserAndTask()
       .then(ret => {
-        debug(ret)
         return chai.request(app).delete(`/beta-v1/tasks/${ret[1]}`).set("Authentication", ret[0])
       })
       .then(res => {
@@ -294,8 +329,8 @@ describe("Task API: /tasks", () => {
       })
     });
   });
-
-  describe("/GET tasks", () => {
+  
+  describe("/GET beta-v1/tasks", () => {
 
     function prepareUserAndTasks(data = defaultUserData) {
       const tasks = [
@@ -373,6 +408,61 @@ describe("Task API: /tasks", () => {
         res.body[0].body.should.equal("task 3 ccccc")
         res.body[1].body.should.equal("task 4 ddddd")
       });
+    });
+  });
+
+});
+
+
+describe("Task Star API:", () => {
+
+  describe("/PUT beta-v1/tasks/{id}/star", () => {
+    it ("Task's star should ON, and updatedAt are not updated.", () => {
+      let token;
+      let updatedAt;
+      return prepareUser()
+      .then(t => {
+        token = t;
+        return chai.request(app).post('/beta-v1/tasks').set("Authentication", t).send({
+          body: "aaaa",
+          at: "2019-01-01T00:00:00+0000",
+        })
+        .then(res => {
+          taskId = res.body.id;
+          updatedAt = res.body.updatedAt;
+          return chai.request(app).put(`/beta-v1/tasks/${taskId}/star`).set("Authentication", t)
+        })
+        .then(res => {
+          res.should.have.status(200);
+          res.body.stared.should.equal(true);
+          res.body.updatedAt.should.equal(updatedAt);
+        })
+      })
+    });
+  });
+
+  describe("/DELETE beta-v1/tasks/{id}/star", () => {
+    it ("Task's star should OFF, and updatedAt are not updated.", () => {
+      let token;
+      let updatedAt;
+      return prepareUser()
+      .then(t => {
+        token = t;
+        return chai.request(app).post('/beta-v1/tasks').set("Authentication", t).send({
+          body: "aaaa",
+          at: "2019-01-01T00:00:00+0000",
+        })
+        .then(res => {
+          taskId = res.body.id;
+          updatedAt = res.body.updatedAt;
+          return chai.request(app).delete(`/beta-v1/tasks/${taskId}/star`).set("Authentication", t)
+        })
+        .then(res => {
+          res.should.have.status(200);
+          res.body.stared.should.equal(false);
+          res.body.updatedAt.should.equal(updatedAt);
+        })
+      })
     });
   });
 

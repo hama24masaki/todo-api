@@ -137,7 +137,7 @@ router.put("/:taskId/star", (req, res) => {
     return task.update({ stared: true })
   })
   .then(task => {
-    return res.status(200).end();
+    return res.status(200).json(task.toJsonResult());
   })
   .catch(err => onNotFoundErrorOrElse(err, res));
 });
@@ -148,7 +148,7 @@ router.delete("/:taskId/star", (req, res) => {
     return task.update({ stared: false })
   })
   .then(task => {
-    return res.status(200).end();
+    return res.status(200).json(task.toJsonResult());
   })
   .catch(err => onNotFoundErrorOrElse(err, res));
 });
