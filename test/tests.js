@@ -1,10 +1,10 @@
 
 process.env.NODE_ENV = 'test';
 
-const models = require('../models');
 const debug = require('debug')('test:');
 const moment = require('moment-timezone');
-const app = require('../app');
+const models = require('../src/models');
+const app = require('../src/app');
 
 // test flamework
 const chai = require('chai');
