@@ -128,6 +128,12 @@ TODOアプリ用API。
 * タイトルまたはコンテンツの一方は必須とする。
 * 作成日時も指定可能（省略時はサーバ上でのリクエスト時刻が採用される）。
 
+- 日時フォーマット（共通）
+  - `YYYY-MM-DDTHH:mm:ss.SSSZ`
+    - SSS：miri second (oprional)
+    - Z：Offset from UTC as +-HH:mm, +-HHmm, or Z (required)
+
+
 + Request (application/json)
 
     + Headers

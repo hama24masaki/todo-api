@@ -208,13 +208,29 @@ describe("Task API:", () => {
       .then(token => {
         return chai.request(app).post('/beta-v1/tasks').set("Authentication", token).send({
           body: "task with createdAt",
-          at: "2019-06-01T11:15:00+0900" // JST
+          at: "2019-06-01T11:15:00+09:00" // JST
         })
       })
       .then(res => {
         // debug(res.body)
         res.should.have.status(201);
-        res.body.createdAt.should.equal('2019-06-01T02:15:00.000Z'); // 
+        res.body.createdAt.should.equal('2019-06-01T02:15:00.000Z'); // UTC
+        res.body.createdAt.should.equal(res.body.updatedAt);
+      })
+    });
+
+    it('Date-string with mili-second should be available.', () => {
+      return prepareUser()
+      .then(token => {
+        return chai.request(app).post('/beta-v1/tasks').set("Authentication", token).send({
+          body: "task with createdAt",
+          at: "2019-06-01T11:15:00.562+09:00" // JST
+        })
+      })
+      .then(res => {
+        // debug(res.body)
+        res.should.have.status(201);
+        res.body.createdAt.should.equal('2019-06-01T02:15:00.562Z'); // UTC
         res.body.createdAt.should.equal(res.body.updatedAt);
       })
     });
@@ -305,7 +321,7 @@ describe("Task API:", () => {
       .then(ret => {
         return chai.request(app).patch(`/beta-v1/tasks/${ret[1]}`).set("Authentication", ret[0]).send({
           body: "task with updatedAt",
-          at: "2019-06-01T15:15:00+0000" // not JST
+          at: "2019-06-01T15:15:00Z" // UTC
         })
       })
       .then(res => {

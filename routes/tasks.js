@@ -21,7 +21,7 @@ const onNotFoundErrorOrElse = (err, res) => {
     return onError(err, res);
 };
 
-const dateFormat = "YYYY-MM-DDTHH:mm:ssZ";
+const dateFormats = [ "YYYY-MM-DDTHH:mm:ssZ", "YYYY-MM-DDTHH:mm:ss.SSSZ" ];
 
 router.use(authChecker); // path指定も可能
 
@@ -52,7 +52,7 @@ router.post("/", (req, res) => {
   
   let dateAt;
   if (req.body.at) {
-    const mDate = moment(req.body.at, dateFormat, true)
+    const mDate = moment(req.body.at, dateFormats, true)
     if (!mDate.isValid()) {
       return res.status(400).json({ 
         error: "Invalid argument",
@@ -92,7 +92,7 @@ router.patch("/:taskId", (req, res) => {
  
   let dateAt;
   if (req.body.at) {
-    const mDate = moment(req.body.at, dateFormat, true)
+    const mDate = moment(req.body.at, dateFormats, true)
     if (!mDate.isValid()) {
       return res.status(400).json({ 
         error: "Invalid argument",
