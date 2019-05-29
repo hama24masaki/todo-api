@@ -132,6 +132,9 @@ TODOアプリ用API。
   - `YYYY-MM-DDTHH:mm:ss.SSSZ`
     - SSS：miri second (oprional)
     - Z：Offset from UTC as +-HH:mm, +-HHmm, or Z (required)
+    - ex:
+      - `2019-01-01T00:00:00Z`: UTC
+      - `2019-04-01T15:30:15.837+09:00`: JST
 
 
 + Request (application/json)
